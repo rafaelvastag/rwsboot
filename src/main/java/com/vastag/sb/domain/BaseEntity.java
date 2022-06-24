@@ -7,8 +7,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode
 @MappedSuperclass
 public abstract class BaseEntity<T extends Number> {
 
