@@ -1,28 +1,26 @@
 package com.vastag.sb.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vastag.sb.domain.Categoria;
+import com.vastag.sb.services.ICategoriaService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaController {
 	
-	@GetMapping
-	public List<Categoria> listarCategorias() {
-
-		Categoria c1 = new Categoria(1, "Informática");
-		Categoria c2 = new Categoria(2, "Escritório");
-		
-		List<Categoria> ls = new ArrayList<>();
-		ls.add(c1);
-		ls.add(c2);
-		
-		return ls;
+	@Qualifier("categoriaService")
+	private final ICategoriaService service;
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> listarCategorias(@PathVariable(name = "id") Integer id) {
+		return ResponseEntity.ok().body(service.buscarById(id));
 	}
 }
