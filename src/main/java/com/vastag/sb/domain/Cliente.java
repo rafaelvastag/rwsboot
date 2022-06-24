@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vastag.sb.domain.enums.TipoCliente;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class Cliente extends BaseEntityAudit implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	

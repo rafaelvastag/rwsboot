@@ -61,7 +61,7 @@ public class RwsbootApplication implements CommandLineRunner {
 		Cidade cd2 = new Cidade("São Paulo", est2);
 		Cidade cd3 = new Cidade("Campinas", est2);
 
-		Cliente cli1 = new Cliente("Rafael VAstag", "rafaelvastag@email.com", "44422233312", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente("Rafael Vastag", "rafaelvastag@email.com", "44422233312", TipoCliente.PESSOA_FISICA);
 		cli1.getTelefones().addAll(Arrays.asList("944442222", "988884444"));
 
 		Endereco end1 = new Endereco("Rua 01", "300", "Apto 100", "Centro", "030303-000", cli1, cd1);
@@ -74,6 +74,6 @@ public class RwsbootApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
 		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(end1, end1));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 	}
 }

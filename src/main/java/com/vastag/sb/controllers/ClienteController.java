@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vastag.sb.services.ICategoriaService;
+import com.vastag.sb.services.IClienteService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoriaController {
-	
-	@Qualifier("categoriaService")
-	private final ICategoriaService service;
+@RequestMapping(value = "/clientes")
+public class ClienteController {
+
+	@Qualifier("clienteService")
+	private final IClienteService service;
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> buscaById(@PathVariable(name = "id") Long id) {
