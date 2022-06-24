@@ -15,7 +15,7 @@ public class CategoriaService implements ICategoriaService {
 	private final CategoriaRepository repo;
 
 	@Override
-	public Categoria buscarById(Integer id) {
+	public Categoria buscarById(Long id) {
 		return repo.findById(id).orElse(null);
 	}
 

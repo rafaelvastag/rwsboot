@@ -20,7 +20,7 @@ public class CategoriaController {
 	private final ICategoriaService service;
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> listarCategorias(@PathVariable(name = "id") Integer id) {
+	public ResponseEntity<?> listarCategorias(@PathVariable(name = "id") Long id) {
 		return ResponseEntity.ok().body(service.buscarById(id));
 	}
 }

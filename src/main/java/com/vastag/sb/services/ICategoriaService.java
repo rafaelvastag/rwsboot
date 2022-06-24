@@ -4,5 +4,5 @@ import com.vastag.sb.domain.Categoria;
 
 public interface ICategoriaService {
 
-	public Categoria buscarById(Integer id);
+	public Categoria buscarById(Long id);
 }
