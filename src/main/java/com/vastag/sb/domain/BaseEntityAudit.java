@@ -16,7 +16,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class BaseEntityAudit extends BaseEntity implements Serializable {
+public abstract class BaseEntityAudit extends BaseEntity<Long> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String createdBy;

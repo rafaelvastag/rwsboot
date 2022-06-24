@@ -10,11 +10,11 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity<T extends Number> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private T id;
  
     @Version
     private Integer version;

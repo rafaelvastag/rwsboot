@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
@@ -17,16 +19,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Categoria extends BaseEntityAudit implements Serializable {
+public class Produto extends BaseEntityAudit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
+	private Double preco;
 
-	@ManyToMany(mappedBy = "categorias")
-	private List<Produto> produtos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private List<Categoria> categorias = new ArrayList<>();
 
-	public Categoria(String nome) {
+	public Produto(String nome, Double preco) {
 		super();
 		this.nome = nome;
+		this.preco = preco;
 	}
 }
