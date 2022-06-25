@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ public class Estado extends BaseEntityAudit implements Serializable{
 
 	private String nome;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "estado")
 	private List<Cidade> cidade = new ArrayList<>();
 	
