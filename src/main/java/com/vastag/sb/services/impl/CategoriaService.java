@@ -21,4 +21,10 @@ public class CategoriaService implements ICategoriaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
+	@Override
+	public Categoria inserir(Categoria obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
+
 }
