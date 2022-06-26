@@ -29,4 +29,9 @@ public class Categoria extends BaseEntityAudit implements Serializable {
 		super();
 		this.nome = nome;
 	}
+
+	public Categoria(Long id, String nome) {
+		this.setId(id);
+		this.nome = nome;
+	}
 }

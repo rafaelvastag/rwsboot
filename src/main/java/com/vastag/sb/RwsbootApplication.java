@@ -57,6 +57,12 @@ public class RwsbootApplication implements CommandLineRunner {
 
 		Categoria c1 = new Categoria("Informática");
 		Categoria c2 = new Categoria("Escritório");
+		Categoria c3 = new Categoria("Cama");
+		Categoria c4 = new Categoria("Mesa");
+		Categoria c5 = new Categoria("Banho");
+		Categoria c6 = new Categoria("Cozinha");
+		Categoria c7 = new Categoria("Jardim");
+		Categoria c8 = new Categoria("Marcenaria");
 
 		Produto p1 = new Produto("Computador", 2000.0);
 		Produto p2 = new Produto("Impressora", 800.0);
@@ -101,12 +107,12 @@ public class RwsbootApplication implements CommandLineRunner {
 
 		pd1.getItens().addAll(Arrays.asList(item1, item2));
 		pd2.getItens().addAll(Arrays.asList(item3));
-		
+
 		p1.getItens().addAll(Arrays.asList(item1));
 		p2.getItens().addAll(Arrays.asList(item3));
 		p3.getItens().addAll(Arrays.asList(item2));
-		
-		categoriaRepository.saveAll(Arrays.asList(c1, c2));
+
+		categoriaRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
