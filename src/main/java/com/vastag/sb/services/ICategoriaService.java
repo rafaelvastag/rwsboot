@@ -4,7 +4,11 @@ import com.vastag.sb.domain.Categoria;
 
 public interface ICategoriaService {
 
-	public Categoria buscarById(Long id);
+	public Categoria findById(Long id);
 
-	public Categoria inserir(Categoria obj);
+	public Categoria insert(Categoria obj);
+	
+	public Categoria update(Categoria obj);
+
+	public void delete(Long id);
 }

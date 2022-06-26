@@ -16,7 +16,7 @@ public class ClienteService implements IClienteService {
 	private final ClienteRepository repo;
 
 	@Override
-	public Cliente buscarById(Long id) {
+	public Cliente findById(Long id) {
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}

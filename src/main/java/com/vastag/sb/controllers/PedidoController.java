@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vastag.sb.domain.Pedido;
 import com.vastag.sb.services.IPedidoService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class PedidoController {
 	private final IPedidoService service;
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> buscaById(@PathVariable(name = "id") Long id) {
-		return ResponseEntity.ok().body(service.buscarById(id));
+	public ResponseEntity<Pedido> findById(@PathVariable(name = "id") Long id) {
+		return ResponseEntity.ok().body(service.findById(id));
 	}
 }

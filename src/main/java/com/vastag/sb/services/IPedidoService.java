@@ -4,5 +4,5 @@ import com.vastag.sb.domain.Pedido;
 
 public interface IPedidoService {
 
-	public Pedido buscarById(Long id);
+	public Pedido findById(Long id);
 }

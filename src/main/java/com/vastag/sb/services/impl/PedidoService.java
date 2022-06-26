@@ -16,7 +16,7 @@ public class PedidoService implements IPedidoService {
 	private final PedidoRepository repo;
 
 	@Override
-	public Pedido buscarById(Long id) {
+	public Pedido findById(Long id) {
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
