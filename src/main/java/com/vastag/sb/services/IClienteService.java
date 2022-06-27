@@ -1,8 +1,23 @@
 package com.vastag.sb.services;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.vastag.sb.domain.Cliente;
+import com.vastag.sb.dto.ClienteDTO;
 
 public interface IClienteService {
 
 	public Cliente findById(Long id);
+
+	public Cliente insert(ClienteDTO obj);
+
+	public Cliente update(ClienteDTO obj);
+
+	public void delete(Long id);
+
+	public List<ClienteDTO> findAll();
+
+	public Page<ClienteDTO> findPageable(Integer page, Integer linesPerPage, String orderBy, String direction);
 }

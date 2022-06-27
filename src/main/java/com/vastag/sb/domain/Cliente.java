@@ -39,12 +39,21 @@ public class Cliente extends BaseEntityAudit implements Serializable {
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
+	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+		super();
+		setId(id);
+		this.nome = nome;
+		this.email = email;
+		this.cpfOuCnpj = cpfOuCnpj;
+		this.tipo = (null == tipo) ? null : tipo.getCod();
+	}
+	
 	public Cliente(String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod();
+		this.tipo = (null == tipo) ? null : tipo.getCod();
 	}
 
 	public String getNome() {

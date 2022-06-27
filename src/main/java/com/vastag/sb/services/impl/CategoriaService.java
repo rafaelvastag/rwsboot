@@ -38,8 +38,13 @@ public class CategoriaService implements ICategoriaService {
 
 	@Override
 	public Categoria update(CategoriaDTO obj) {
-		findById(obj.getId());
-		return repo.save(fromDTO(obj));
+		Categoria c = findById(obj.getId());
+		updateCategoriaDataFromDTO(c, obj);
+		return repo.save(c);
+	}
+
+	private void updateCategoriaDataFromDTO(Categoria c, CategoriaDTO obj) {
+		c.setNome(obj.getNome());
 	}
 
 	@Override
@@ -59,12 +64,12 @@ public class CategoriaService implements ICategoriaService {
 
 	@Override
 	public Page<CategoriaDTO> findPageable(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pr = PageRequest.of(page,linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pr = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pr).map(CategoriaDTO::new);
 	}
-	
+
 	private Categoria fromDTO(CategoriaDTO c) {
-		return new Categoria(c.getId() ,c.getNome());
+		return new Categoria(c.getId(), c.getNome());
 	}
 
 }
