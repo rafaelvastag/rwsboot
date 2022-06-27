@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.vastag.sb.services.DBService;
+import com.vastag.sb.services.IEmailService;
+import com.vastag.sb.services.SmtpEmailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,11 @@ public class EnvironmentDevConfig {
 		
 		dbService.seedTestDatabase();
 		return true;
+	}
+	
+	@Bean
+	public IEmailService emailService() {
+		return new SmtpEmailService();
 	}
 	
 }
