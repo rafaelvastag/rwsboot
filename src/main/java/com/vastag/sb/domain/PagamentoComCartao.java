@@ -2,6 +2,7 @@ package com.vastag.sb.domain;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.vastag.sb.domain.enums.PagamentoStatus;
 
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonTypeName("pagamentoComCartao")
 @Entity
 public class PagamentoComCartao extends Pagamento {
 	private static final long serialVersionUID = 1L;
