@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vastag.sb.domain.Categoria;
@@ -18,6 +19,7 @@ import com.vastag.sb.domain.PagamentoComCartao;
 import com.vastag.sb.domain.Pedido;
 import com.vastag.sb.domain.Produto;
 import com.vastag.sb.domain.enums.PagamentoStatus;
+import com.vastag.sb.domain.enums.Perfil;
 import com.vastag.sb.domain.enums.TipoCliente;
 import com.vastag.sb.repositories.CategoriaRepository;
 import com.vastag.sb.repositories.CidadeRepository;
@@ -34,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class DBService {
-	
+
 	private final CategoriaRepository categoriaRepository;
 	private final ProdutoRepository produtoRepository;
 	private final CidadeRepository cidadeRepository;
@@ -44,6 +46,7 @@ public class DBService {
 	private final PedidoRepository pedidoRepository;
 	private final PagamentoRepository pagamentoRepository;
 	private final ItemPedidoRepository itemPedidoRepository;
+	private final BCryptPasswordEncoder encoder;
 
 	public void seedTestDatabase() throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -96,13 +99,21 @@ public class DBService {
 		Cidade cd2 = new Cidade("São Paulo", est2);
 		Cidade cd3 = new Cidade("Campinas", est2);
 
-		Cliente cli1 = new Cliente("Rafael Vastag", "email@gmail.com", "44422233312", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente("Rafael Vastag", "email@gmail.com", "66742069031", TipoCliente.PESSOA_FISICA,
+				encoder.encode("password"));
 		cli1.getTelefones().addAll(Arrays.asList("944442222", "988884444"));
+
+		Cliente cli2 = new Cliente("Ana Vastag", "ana@gmail.com", "93418206000", TipoCliente.PESSOA_FISICA,
+				encoder.encode("password123"));
+		cli2.getTelefones().addAll(Arrays.asList("944443322", "9844484444"));
+		cli2.addPerfil(Perfil.ADMIN);
 
 		Endereco end1 = new Endereco("Rua 01", "300", "Apto 100", "Centro", "030303-000", cli1, cd1);
 		Endereco end2 = new Endereco("Rua Esquerda", "450", "Apto 30", "Vila Rosilda", "456783-000", cli1, cd2);
+		Endereco end3 = new Endereco("Rua 3", "450", null, "Vila Jabuti", "456783-000", cli2, cd2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+		cli2.getEnderecos().addAll(Arrays.asList(end3));
 
 		Pedido pd1 = new Pedido(sdf.parse("30/09/2022 10:32"), cli1, end1);
 		Pedido pd2 = new Pedido(sdf.parse("10/11/2022 20:14"), cli1, end2);
@@ -130,8 +141,8 @@ public class DBService {
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(end1, end2));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 		pedidoRepository.saveAll(Arrays.asList(pd1, pd2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		itemPedidoRepository.saveAll(Arrays.asList(item1, item2, item3));
