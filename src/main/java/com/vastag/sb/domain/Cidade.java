@@ -20,9 +20,15 @@ public class Cidade extends BaseEntityAudit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "estado_id")
 	private Estado estado;
 
+	public Cidade(Long id, String nome, Estado estado) {
+		super();
+		setId(id);
+		this.nome = nome;
+		this.estado = estado;
+	}
 }

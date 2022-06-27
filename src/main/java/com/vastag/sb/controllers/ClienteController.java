@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.vastag.sb.domain.Cliente;
 import com.vastag.sb.dto.ClienteDTO;
+import com.vastag.sb.dto.ClienteNewDTO;
 import com.vastag.sb.services.IClienteService;
 
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class ClienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO obj) {
 		Cliente resource = service.insert(obj);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(resource.getId())

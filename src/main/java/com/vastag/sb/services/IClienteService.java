@@ -6,12 +6,13 @@ import org.springframework.data.domain.Page;
 
 import com.vastag.sb.domain.Cliente;
 import com.vastag.sb.dto.ClienteDTO;
+import com.vastag.sb.dto.ClienteNewDTO;
 
 public interface IClienteService {
 
 	public Cliente findById(Long id);
 
-	public Cliente insert(ClienteDTO obj);
+	public Cliente insert(ClienteNewDTO obj);
 
 	public Cliente update(ClienteDTO obj);
 

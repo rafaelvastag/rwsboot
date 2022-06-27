@@ -35,4 +35,17 @@ public class Endereco extends BaseEntityAudit implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
+	
+	public Endereco(Long id, String logradouro, String numero, String complemento, String bairro, String cep,
+			Cliente cliente, Cidade cidade) {
+		super();
+		setId(id);
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.cliente = cliente;
+		this.setCidade(cidade);
+	}
 }
