@@ -12,11 +12,8 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.vastag.sb.controllers.exceptions.FieldMessage;
 import com.vastag.sb.domain.Cliente;
-import com.vastag.sb.domain.enums.TipoCliente;
 import com.vastag.sb.dto.ClienteDTO;
-import com.vastag.sb.dto.ClienteNewDTO;
 import com.vastag.sb.repositories.ClienteRepository;
-import com.vastag.sb.services.utils.ValidationBRUtil;
 import com.vastag.sb.services.validation.ClienteUpdate;
 
 import lombok.RequiredArgsConstructor;

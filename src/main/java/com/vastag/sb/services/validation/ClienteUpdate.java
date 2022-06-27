@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.vastag.sb.services.validation.validators.ClienteInsertValidator;
 import com.vastag.sb.services.validation.validators.ClienteUpdateValidator;
 
 @Constraint(validatedBy = ClienteUpdateValidator.class)
