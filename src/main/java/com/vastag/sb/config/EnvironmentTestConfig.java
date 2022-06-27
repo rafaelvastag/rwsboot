@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.vastag.sb.services.DBService;
+import com.vastag.sb.services.IEmailService;
+import com.vastag.sb.services.MockEmailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,4 +25,8 @@ public class EnvironmentTestConfig {
 		return true;
 	}
 	
+	@Bean
+	public IEmailService emailService() {
+		return new MockEmailService();
+	}
 }

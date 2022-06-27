@@ -13,6 +13,7 @@ import com.vastag.sb.repositories.ItemPedidoRepository;
 import com.vastag.sb.repositories.PagamentoRepository;
 import com.vastag.sb.repositories.PedidoRepository;
 import com.vastag.sb.services.IClienteService;
+import com.vastag.sb.services.IEmailService;
 import com.vastag.sb.services.IPedidoService;
 import com.vastag.sb.services.IProdutoService;
 import com.vastag.sb.services.exceptions.ObjectNotFoundException;
@@ -30,7 +31,8 @@ public class PedidoService implements IPedidoService {
 	public final IProdutoService produtoService;
 	private final IClienteService clienteService;
 	private final EnderecoRepository enderecoRepo;
-	public final ItemPedidoRepository itemPedidoRepo;
+	private final ItemPedidoRepository itemPedidoRepo;
+	private final IEmailService emailService;
 
 	@Override
 	public Pedido findById(Long id) {
@@ -59,6 +61,7 @@ public class PedidoService implements IPedidoService {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepo.saveAll(obj.getItens());
+		emailService.sendOrderConfirmation(obj);
 		return obj;
 	}
 }
