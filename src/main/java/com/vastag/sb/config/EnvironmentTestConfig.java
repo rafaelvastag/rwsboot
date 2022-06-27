@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Configuration
 @Profile("test")
-public class EnvironmentConfig {
+public class EnvironmentTestConfig {
 	
 	private final DBService dbService;
 
