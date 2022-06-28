@@ -29,6 +29,8 @@ public class Cliente extends BaseEntityAudit implements Serializable {
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
+	
+	private String imageURL;
 
 	@JsonIgnore
 	private String senha;
@@ -143,5 +145,13 @@ public class Cliente extends BaseEntityAudit implements Serializable {
 
 	public void addPerfil(Perfil perfil) {
 		this.perfis.add(perfil.getCod());
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 }

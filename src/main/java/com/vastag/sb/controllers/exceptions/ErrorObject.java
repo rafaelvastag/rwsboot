@@ -2,53 +2,22 @@ package com.vastag.sb.controllers.exceptions;
 
 import java.io.Serializable;
 
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ErrorObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private HttpStatus status;
-	private Integer code;
+	private Long timestamp;
+	private Integer status;
+	private String error;
 	private String message;
-	private Long timeStamp;
-
-	public ErrorObject(HttpStatus status, String message, Long timeStamp) {
-		super();
-		this.status = status;
-		this.code = status.value();
-		this.message = message;
-		this.timeStamp = timeStamp;
-	}
-
-	public HttpStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public Long getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(Long timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
-	public Integer getCode() {
-		return code;
-	}
-
-	public void setCode(Integer code) {
-		this.code = code;
-	}
+	private String path;
+	
 }

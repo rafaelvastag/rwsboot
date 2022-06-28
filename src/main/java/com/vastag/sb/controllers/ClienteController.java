@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.vastag.sb.domain.Cliente;
@@ -34,22 +35,27 @@ public class ClienteController {
 
 	@Qualifier("clienteService")
 	private final IClienteService service;
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> findById(@PathVariable(name = "id") Long id) {
 		return ResponseEntity.ok().body(service.findById(id));
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping()
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 
+	@GetMapping(value = "/email")
+	public ResponseEntity<Cliente> find(@RequestParam(value = "value") String email) {
+		Cliente obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<ClienteDTO>> findPageable(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ClienteDTO>> findPageable(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
@@ -63,6 +69,12 @@ public class ClienteController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(resource.getId())
 				.toUri();
 
+		return ResponseEntity.created(uri).build();
+	}
+
+	@PostMapping(value = "/picture")
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam MultipartFile file) {
+		URI uri = service.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}
 

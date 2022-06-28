@@ -1,8 +1,12 @@
 package com.vastag.sb.services.impl;
 
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vastag.sb.domain.Cidade;
 import com.vastag.sb.domain.Cliente;
@@ -23,9 +28,12 @@ import com.vastag.sb.repositories.ClienteRepository;
 import com.vastag.sb.repositories.EnderecoRepository;
 import com.vastag.sb.security.UserSpringSecurity;
 import com.vastag.sb.services.IClienteService;
+import com.vastag.sb.services.IImageService;
+import com.vastag.sb.services.IS3Service;
 import com.vastag.sb.services.exceptions.AuthorizationException;
 import com.vastag.sb.services.exceptions.DataIntegrityException;
 import com.vastag.sb.services.exceptions.ObjectNotFoundException;
+import com.vastag.sb.services.exceptions.UploadFileToAmazonS3Exception;
 import com.vastag.sb.services.impl.security.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +45,15 @@ public class ClienteService implements IClienteService {
 	private final ClienteRepository repo;
 	private final EnderecoRepository endRepo;
 	private final CidadeRepository cidadeRepo;
+	private final IS3Service awsS3Service;
+	private final IImageService imageService;
 	private final BCryptPasswordEncoder encoder;
+
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
+
+	@Value("${img.profile.size}")
+	private Integer size;
 
 	@Override
 	public Cliente findById(Long id) {
@@ -49,6 +65,21 @@ public class ClienteService implements IClienteService {
 
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+
+	@Override
+	public Cliente findByEmail(String email) {
+		UserSpringSecurity user = UserService.authenticatedUser();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Optional<Cliente> obj = repo.findByEmail(email);
+		if (obj.isEmpty()) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj.get();
 	}
 
 	@Override
@@ -108,5 +139,32 @@ public class ClienteService implements IClienteService {
 			cli.getTelefones().add(c.getTelefone3());
 		}
 		return cli;
+	}
+
+	@Override
+	public URI uploadProfilePicture(MultipartFile file) {
+		try {
+
+			UserSpringSecurity user = UserService.authenticatedUser();
+			if (user == null) {
+				throw new AuthorizationException("Acesso negado");
+			}
+
+			BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
+			jpgImage = imageService.cropSquare(jpgImage);
+			jpgImage = imageService.resize(jpgImage, size);
+
+			String fileName = prefix + user.getId() + ".jpg";
+
+			URI uri = awsS3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+
+			Cliente c = repo.findById(user.getId()).get();
+			c.setImageURL(uri.toString());
+			repo.save(c);
+
+			return uri;
+		} catch (Exception e) {
+			throw new UploadFileToAmazonS3Exception("Não é possível excluir uma Cliente com produtos associados");
+		}
 	}
 }
