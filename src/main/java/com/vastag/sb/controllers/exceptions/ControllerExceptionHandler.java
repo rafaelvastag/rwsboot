@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.vastag.sb.services.exceptions.AuthorizationException;
 import com.vastag.sb.services.exceptions.DataIntegrityException;
 import com.vastag.sb.services.exceptions.ObjectNotFoundException;
 
@@ -18,6 +19,12 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<ErrorObject> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 		ErrorObject err = new ErrorObject(HttpStatus.NOT_FOUND, e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<ErrorObject> objectNotFound(AuthorizationException e, HttpServletRequest request) {
+		ErrorObject err = new ErrorObject(HttpStatus.FORBIDDEN, e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 
 	@ExceptionHandler(DataIntegrityException.class)
@@ -35,7 +42,7 @@ public class ControllerExceptionHandler {
 		e.getBindingResult().getFieldErrors().stream().forEach(er -> {
 			err.addError(er.getField(), er.getDefaultMessage());
 		});
-		
+
 		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(err);
 	}
 

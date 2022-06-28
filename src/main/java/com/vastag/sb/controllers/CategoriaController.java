@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class CategoriaController {
 		return ResponseEntity.ok().body(service.findPageable(page, linesPerPage, orderBy, direction));
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO obj) {
 		Categoria resource = service.insert(obj);
@@ -62,6 +64,7 @@ public class CategoriaController {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id, @Valid @RequestBody CategoriaDTO obj) {
 		obj.setId(id);
@@ -70,6 +73,7 @@ public class CategoriaController {
 
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
 		service.delete(id);

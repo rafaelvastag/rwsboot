@@ -14,15 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vastag.sb.domain.Cidade;
 import com.vastag.sb.domain.Cliente;
 import com.vastag.sb.domain.Endereco;
+import com.vastag.sb.domain.enums.Perfil;
 import com.vastag.sb.domain.enums.TipoCliente;
 import com.vastag.sb.dto.ClienteDTO;
 import com.vastag.sb.dto.ClienteNewDTO;
 import com.vastag.sb.repositories.CidadeRepository;
 import com.vastag.sb.repositories.ClienteRepository;
 import com.vastag.sb.repositories.EnderecoRepository;
+import com.vastag.sb.security.UserSpringSecurity;
 import com.vastag.sb.services.IClienteService;
+import com.vastag.sb.services.exceptions.AuthorizationException;
 import com.vastag.sb.services.exceptions.DataIntegrityException;
 import com.vastag.sb.services.exceptions.ObjectNotFoundException;
+import com.vastag.sb.services.impl.security.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +41,12 @@ public class ClienteService implements IClienteService {
 
 	@Override
 	public Cliente findById(Long id) {
+
+		UserSpringSecurity user = UserService.authenticatedUser();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
@@ -82,9 +92,10 @@ public class ClienteService implements IClienteService {
 		PageRequest pr = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pr).map(ClienteDTO::new);
 	}
-	
+
 	private Cliente fromDTO(ClienteNewDTO c) {
-		Cliente cli = new Cliente(null, c.getNome(), c.getEmail(), c.getCpfOuCnpj(), TipoCliente.toEnum(c.getTipo()), encoder.encode(c.getSenha()));
+		Cliente cli = new Cliente(null, c.getNome(), c.getEmail(), c.getCpfOuCnpj(), TipoCliente.toEnum(c.getTipo()),
+				encoder.encode(c.getSenha()));
 		Cidade cid = cidadeRepo.findById(c.getCidadeId()).get();
 		Endereco end = new Endereco(null, c.getLogradouro(), c.getNumero(), c.getComplemento(), c.getBairro(),
 				c.getCep(), cli, cid);

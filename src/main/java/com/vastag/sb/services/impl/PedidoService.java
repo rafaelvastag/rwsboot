@@ -2,8 +2,12 @@ package com.vastag.sb.services.impl;
 
 import java.util.Date;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.vastag.sb.domain.Cliente;
 import com.vastag.sb.domain.ItemPedido;
 import com.vastag.sb.domain.PagamentoComBoleto;
 import com.vastag.sb.domain.Pedido;
@@ -12,11 +16,14 @@ import com.vastag.sb.repositories.EnderecoRepository;
 import com.vastag.sb.repositories.ItemPedidoRepository;
 import com.vastag.sb.repositories.PagamentoRepository;
 import com.vastag.sb.repositories.PedidoRepository;
+import com.vastag.sb.security.UserSpringSecurity;
 import com.vastag.sb.services.IClienteService;
 import com.vastag.sb.services.IEmailService;
 import com.vastag.sb.services.IPedidoService;
 import com.vastag.sb.services.IProdutoService;
+import com.vastag.sb.services.exceptions.AuthorizationException;
 import com.vastag.sb.services.exceptions.ObjectNotFoundException;
+import com.vastag.sb.services.impl.security.UserService;
 import com.vastag.sb.services.utils.BoletoServiceUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -63,5 +70,16 @@ public class PedidoService implements IPedidoService {
 		itemPedidoRepo.saveAll(obj.getItens());
 		emailService.sendOrderConfirmation(obj);
 		return obj;
+	}
+
+	@Override
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSpringSecurity user = UserService.authenticatedUser();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente = clienteService.findById(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 }
