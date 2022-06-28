@@ -15,6 +15,7 @@ import com.vastag.sb.security.utils.JWTUtil;
 import com.vastag.sb.services.IAuthService;
 import com.vastag.sb.services.impl.security.UserService;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class AuthController {
 	private final JWTUtil jwtUtil;
 	private final IAuthService service;
 
+	@ApiOperation(value = "Atualiza token vigente")
 	@PostMapping(value = "/refresh_token")
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSpringSecurity user = UserService.authenticatedUser();
@@ -34,6 +36,7 @@ public class AuthController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation(value = "Envia email com senha de recuperação")
 	@PostMapping(value = "/forgot-password")
 	public ResponseEntity<Void> forgotPassword(@Valid @RequestBody EmailDTO obj) {
 		service.sendNewPassword(obj.getEmail());

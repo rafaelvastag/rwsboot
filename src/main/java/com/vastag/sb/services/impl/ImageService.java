@@ -11,11 +11,13 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vastag.sb.services.IImageService;
 import com.vastag.sb.services.exceptions.FileException;
 
+@Service
 public class ImageService implements IImageService {
 
 	@Override

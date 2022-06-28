@@ -24,6 +24,9 @@ import com.vastag.sb.domain.Categoria;
 import com.vastag.sb.dto.CategoriaDTO;
 import com.vastag.sb.services.ICategoriaService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -73,6 +76,10 @@ public class CategoriaController {
 
 	}
 
+	@ApiOperation(value = "Deleta uma categoria")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
+			@ApiResponse(code = 404, message = "Código inexistente") })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
